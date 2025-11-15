@@ -667,6 +667,11 @@
       });
 
       document.getElementById("recipe-save").addEventListener("click", async () => {
+        const recipeValidationError = validateRecipes();
+        if (recipeValidationError) {
+          setStatus("recipe-status", recipeValidationError);
+          return;
+        }
         try {
           await fetch(endpoints.recipes, {
             method: "POST",
@@ -681,6 +686,11 @@
       });
 
       document.getElementById("pump-save").addEventListener("click", async () => {
+        const pumpValidationError = validatePumps();
+        if (pumpValidationError) {
+          setStatus("pump-status", pumpValidationError);
+          return;
+        }
         try {
           await fetch(endpoints.pumps, {
             method: "POST",
@@ -693,6 +703,43 @@
           setStatus("pump-status", "Ошибка");
         }
       });
+
+      function validateRecipes() {
+        for (const recipe of state.recipes) {
+          for (const component of recipe.components) {
+            if (!component.ingredient) continue;
+            const rawWeight = component.weight ?? "";
+            if (String(rawWeight).trim() === "") {
+              return `Заполните вес для ингредиента в рецепте "${recipe.name || "без названия"}"`;
+            }
+            const weightValue = Number(rawWeight);
+            if (!Number.isFinite(weightValue) || weightValue <= 0) {
+              return `Некорректный вес ингредиента в рецепте "${recipe.name || "без названия"}"`;
+            }
+          }
+        }
+        return "";
+      }
+
+      function validatePumps() {
+        const ingredientUsage = new Set();
+        const pumpUsage = new Map();
+        for (const assignment of state.pumps) {
+          const ingredient = assignment.ingredient?.trim();
+          const pump = (assignment.pump ?? "").toString().trim();
+          if (!ingredient) continue;
+          if (ingredientUsage.has(ingredient)) {
+            return `Ингредиент ${ingredient} уже привязан к другой помпе`;
+          }
+          ingredientUsage.add(ingredient);
+          if (!pump || pump === "-1") continue;
+          if (pumpUsage.has(pump)) {
+            return `Помпа ${pump} уже занята ингредиентом ${pumpUsage.get(pump)}`;
+          }
+          pumpUsage.set(pump, ingredient);
+        }
+        return "";
+      }
 
       init();
     </script>
