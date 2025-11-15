@@ -222,8 +222,42 @@
           padding: 16px;
         }
 
+        .row {
+          flex-direction: column;
+        }
+
+        .row > * {
+          min-width: 100%;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        #ingredients-section .list-header,
+        #pumps-section .list-header {
+          display: none;
+        }
+
+        .ingredient-row,
+        .pump-row,
         .component-row {
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
+        }
+
+        .ingredient-row button,
+        .pump-row button,
+        .component-row button {
+          justify-self: flex-start;
+        }
+
+        .components {
+          border-left: none;
+          border-top: 2px dashed rgba(255, 255, 255, 0.08);
+          padding-left: 0;
+          padding-top: 12px;
+          margin-left: 0;
         }
 
         .recipe-actions {
