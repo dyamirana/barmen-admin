@@ -149,18 +149,9 @@
         margin-top: 16px;
       }
 
-      .list-header,
-      .ingredient-row,
-      .pump-row,
-      .recipe-row,
-      .component-row {
+      .list-header {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        align-items: center;
-      }
-
-      .list-header {
         text-transform: uppercase;
         font-size: 0.75rem;
         letter-spacing: 0.08em;
@@ -168,6 +159,7 @@
         border-bottom: 1px solid var(--border);
         padding-bottom: 8px;
         margin-bottom: 12px;
+        gap: 12px;
       }
 
       .badge {
@@ -178,30 +170,76 @@
         color: var(--text-muted);
       }
 
+      #ingredient-rows,
+      #pump-rows,
       .components {
-        border-left: 2px dashed rgba(255, 255, 255, 0.08);
-        padding-left: 12px;
-        margin: 12px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
 
-      #ingredients-section .list-header,
-      .ingredient-row {
+      .components {
+        margin-top: 8px;
+      }
+
+      .ingredient-row,
+      .pump-row,
+      .component-row {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 16px;
+        padding-right: 64px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background-color: rgba(15, 23, 42, 0.75);
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.08);
+      }
+
+      .ingredient-row input,
+      .pump-row select,
+      .component-row select,
+      .component-row input {
+        flex: 1 1 180px;
+        min-width: 0;
+      }
+
+      .ingredient-row button,
+      .pump-row button,
+      .component-row button {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        margin: 0;
+      }
+
+      #recipe-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .recipe-row {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .recipe-row .row {
+        flex-direction: column;
+      }
+
+      .recipe-row .row > * {
+        min-width: 100%;
+      }
+
+      #ingredients-section .list-header {
         grid-template-columns: minmax(110px, 160px) minmax(200px, 1fr) auto;
       }
 
-      #pumps-section .list-header,
-      .pump-row {
+      #pumps-section .list-header {
         grid-template-columns: minmax(180px, 1fr) minmax(80px, 110px) auto;
-      }
-
-      .component-row {
-        grid-template-columns: minmax(160px, 1fr) minmax(80px, 110px) auto;
-      }
-
-      .component-row select,
-      .ingredient-row input,
-      .pump-row select {
-        min-width: 0;
       }
 
       .recipe-actions {
@@ -222,8 +260,22 @@
           padding: 16px;
         }
 
-        .component-row {
-          grid-template-columns: 1fr 1fr;
+        .row {
+          flex-direction: column;
+        }
+
+        .row > * {
+          min-width: 100%;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        #ingredients-section .list-header,
+        #pumps-section .list-header {
+          display: none;
         }
 
         .recipe-actions {
@@ -377,6 +429,10 @@
       const componentTemplate = document.getElementById("component-row-template");
       const pumpTemplate = document.getElementById("pump-row-template");
 
+      function confirmRemoval(message) {
+        return window.confirm(message);
+      }
+
       async function init() {
         await Promise.all([
           loadConfig(),
@@ -471,6 +527,7 @@
           row
             .querySelector('[data-action="remove"]')
             .addEventListener("click", () => {
+              if (!confirmRemoval("Удалить ингредиент?")) return;
               state.ingredients.splice(idx, 1);
               renderIngredients();
             });
@@ -517,6 +574,7 @@
               compRow
                 .querySelector('[data-action="remove"]')
                 .addEventListener("click", () => {
+                  if (!confirmRemoval("Удалить ингредиент из рецепта?")) return;
                   recipe.components.splice(compIndex, 1);
                   renderComponents();
                 });
@@ -536,6 +594,7 @@
           node
             .querySelector('[data-action="remove-recipe"]')
             .addEventListener("click", () => {
+              if (!confirmRemoval("Удалить рецепт?")) return;
               state.recipes.splice(recipeIndex, 1);
               renderRecipes();
             });
@@ -566,6 +625,7 @@
           row
             .querySelector('[data-action="remove"]')
             .addEventListener("click", () => {
+              if (!confirmRemoval("Удалить назначение помпы?")) return;
               state.pumps.splice(idx, 1);
               renderPumps();
             });
