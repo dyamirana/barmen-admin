@@ -82,14 +82,23 @@
 
       button {
         border: none;
-        border-radius: 999px;
-        padding: 10px 16px;
+        border-radius: 12px;
+        padding: 8px 14px;
         font-weight: 600;
         font-size: 0.95rem;
         cursor: pointer;
         color: #0f172a;
         background: var(--accent);
         transition: background 0.2s ease;
+      }
+
+      button.icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
       button.secondary {
@@ -115,6 +124,15 @@
       .row > * {
         flex: 1;
         min-width: 140px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
       }
 
       .section-actions {
@@ -160,8 +178,32 @@
         margin: 12px 0;
       }
 
+      #ingredients-section .list-header,
+      .ingredient-row {
+        grid-template-columns: minmax(110px, 160px) minmax(200px, 1fr) auto;
+      }
+
+      #pumps-section .list-header,
+      .pump-row {
+        grid-template-columns: minmax(180px, 1fr) minmax(80px, 110px) auto;
+      }
+
       .component-row {
-        grid-template-columns: 1fr minmax(90px, 140px) auto;
+        grid-template-columns: minmax(160px, 1fr) minmax(80px, 110px) auto;
+      }
+
+      .component-row select,
+      .ingredient-row input,
+      .pump-row select {
+        min-width: 0;
+      }
+
+      .recipe-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 12px;
       }
 
       .empty-message {
@@ -176,6 +218,10 @@
 
         .component-row {
           grid-template-columns: 1fr 1fr;
+        }
+
+        .recipe-actions {
+          justify-content: flex-start;
         }
       }
     </style>
@@ -203,7 +249,7 @@
         </section>
 
         <section class="card" id="ingredients-section">
-          <div class="row" style="align-items: center">
+          <div class="section-header">
             <h2 style="margin: 0">Ингредиенты</h2>
             <button class="secondary" id="ingredient-add">+ добавить</button>
           </div>
@@ -223,7 +269,7 @@
         </section>
 
         <section class="card" id="recipes-section">
-          <div class="row" style="align-items: center">
+          <div class="section-header">
             <h2 style="margin: 0">Рецепты</h2>
             <button class="secondary" id="recipe-add">+ рецепт</button>
           </div>
@@ -238,7 +284,7 @@
         </section>
 
         <section class="card" id="pumps-section">
-          <div class="row" style="align-items: center">
+          <div class="section-header">
             <h2 style="margin: 0">Помпы</h2>
             <button class="secondary" id="pump-add">+ назначение</button>
           </div>
@@ -263,7 +309,7 @@
       <div class="ingredient-row">
         <input type="text" placeholder="rum" data-field="short" />
         <input type="text" placeholder="Ром" data-field="name" />
-        <button class="danger" data-action="remove">×</button>
+        <button class="danger icon" data-action="remove">×</button>
       </div>
     </template>
 
@@ -271,7 +317,7 @@
       <div class="component-row">
         <select data-field="ingredient"></select>
         <input type="number" min="0" step="5" placeholder="60" data-field="weight" />
-        <button class="danger" data-action="remove">×</button>
+        <button class="danger icon" data-action="remove">×</button>
       </div>
     </template>
 
@@ -284,12 +330,10 @@
           </div>
         </div>
         <div class="components"></div>
-        <button class="secondary" data-action="add-component" style="margin-top: 12px">
-          + ингредиент
-        </button>
-        <button class="danger" data-action="remove-recipe" style="margin-top: 12px">
-          Удалить рецепт
-        </button>
+        <div class="recipe-actions">
+          <button class="secondary" data-action="add-component">+ ингредиент</button>
+          <button class="danger" data-action="remove-recipe">Удалить рецепт</button>
+        </div>
       </div>
     </template>
 
@@ -297,7 +341,7 @@
       <div class="pump-row">
         <select data-field="ingredient"></select>
         <input type="number" min="-1" max="5" step="1" placeholder="0" data-field="pump" />
-        <button class="danger" data-action="remove">×</button>
+        <button class="danger icon" data-action="remove">×</button>
       </div>
     </template>
 
