@@ -340,7 +340,7 @@
     <template id="pump-row-template">
       <div class="pump-row">
         <select data-field="ingredient"></select>
-        <input type="number" min="-1" max="5" step="1" placeholder="0" data-field="pump" />
+        <select data-field="pump"></select>
         <button class="danger icon" data-action="remove">×</button>
       </div>
     </template>
@@ -548,12 +548,15 @@
         state.pumps.forEach((item, idx) => {
           const fragment = pumpTemplate.content.cloneNode(true);
           const row = fragment.querySelector(".pump-row");
-          const select = row.querySelector("select");
-          populateIngredientSelect(select, item.ingredient, true);
-          select.addEventListener("change", (e) => (item.ingredient = e.target.value));
-          const input = row.querySelector("input");
-          input.value = item.pump;
-          input.addEventListener("input", (e) => (item.pump = e.target.value));
+          const ingredientSelect = row.querySelector('[data-field="ingredient"]');
+          populateIngredientSelect(ingredientSelect, item.ingredient, true);
+          ingredientSelect.addEventListener(
+            "change",
+            (e) => (item.ingredient = e.target.value)
+          );
+          const pumpSelect = row.querySelector('[data-field="pump"]');
+          populatePumpSelect(pumpSelect, item.pump);
+          pumpSelect.addEventListener("change", (e) => (item.pump = e.target.value));
           row
             .querySelector('[data-action="remove"]')
             .addEventListener("click", () => {
@@ -581,6 +584,29 @@
         });
         if (!select.value && state.ingredients[0]) {
           select.value = state.ingredients[0].short;
+        }
+      }
+
+      function populatePumpSelect(select, value) {
+        const pumpOptions = [
+          { value: "-1", label: "Ручной налив" },
+          ...Array.from({ length: 6 }, (_, idx) => ({
+            value: String(idx),
+            label: String(idx + 1),
+          })),
+        ];
+        select.innerHTML = "";
+        pumpOptions.forEach((optionData) => {
+          const option = document.createElement("option");
+          option.value = optionData.value;
+          option.textContent = optionData.label;
+          if (optionData.value === (value ?? "")) {
+            option.selected = true;
+          }
+          select.appendChild(option);
+        });
+        if (!select.value) {
+          select.value = "-1";
         }
       }
 
@@ -632,7 +658,7 @@
       });
 
       document.getElementById("pump-add").addEventListener("click", () => {
-        state.pumps.push({ ingredient: state.ingredients[0]?.short || "", pump: "" });
+        state.pumps.push({ ingredient: state.ingredients[0]?.short || "", pump: "-1" });
         renderPumps();
       });
 
@@ -706,7 +732,17 @@
 
       function validateRecipes() {
         for (const recipe of state.recipes) {
+          const usedIngredients = new Set();
           for (const component of recipe.components) {
+            const ingredient = component.ingredient?.trim();
+            if (ingredient) {
+              if (usedIngredients.has(ingredient)) {
+                return `Ингредиент ${ingredient} уже добавлен в рецепт "${
+                  recipe.name || "без названия"
+                }"`;
+              }
+              usedIngredients.add(ingredient);
+            }
             if (!component.ingredient) continue;
             const rawWeight = component.weight ?? "";
             if (String(rawWeight).trim() === "") {
