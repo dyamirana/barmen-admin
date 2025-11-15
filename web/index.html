@@ -278,6 +278,26 @@
           display: none;
         }
 
+        .ingredient-row,
+        .pump-row,
+        .component-row {
+          grid-template-columns: 1fr;
+        }
+
+        .ingredient-row button,
+        .pump-row button,
+        .component-row button {
+          justify-self: flex-start;
+        }
+
+        .components {
+          border-left: none;
+          border-top: 2px dashed rgba(255, 255, 255, 0.08);
+          padding-left: 0;
+          padding-top: 12px;
+          margin-left: 0;
+        }
+
         .recipe-actions {
           justify-content: flex-start;
         }
