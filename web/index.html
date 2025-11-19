@@ -176,8 +176,8 @@
         font-size: 0.75rem;
         letter-spacing: 0.08em;
         color: var(--text-muted);
-        gap: 6px;
-        padding: 6px 10px;
+        gap: 4px;
+        padding: 4px 8px;
       }
 
       .list {
@@ -219,7 +219,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
         align-items: center;
         gap: 4px 8px;
-        padding: 6px 8px;
+        padding: 0 6px;
         border-radius: 0;
         border: none;
         background: transparent;
@@ -249,6 +249,11 @@
       .list-body input,
       .list-body select {
         border-radius: 0;
+        border-top: 0;
+        border-bottom: 0;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        padding: 8px 10px;
       }
 
       .list-body > .ingredient-row:first-child input,
@@ -257,6 +262,7 @@
       .list-body > .pump-row:first-child select,
       .list-body > .component-row:first-child input,
       .list-body > .component-row:first-child select {
+        border-top: 1px solid var(--border);
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
       }
@@ -267,6 +273,7 @@
       .list-body > .pump-row:last-child select,
       .list-body > .component-row:last-child input,
       .list-body > .component-row:last-child select {
+        border-bottom: 1px solid var(--border);
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
       }
