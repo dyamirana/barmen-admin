@@ -61,6 +61,19 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
       }
 
+      .card.collapsed .section-content {
+        display: none;
+      }
+
+      .collapse-toggle {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+
       label {
         display: block;
         font-size: 0.9rem;
@@ -138,7 +151,14 @@
         justify-content: space-between;
         gap: 12px;
         flex-wrap: wrap;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+      }
+
+      .section-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
       }
 
       .section-actions {
@@ -146,7 +166,7 @@
         justify-content: flex-end;
         flex-wrap: wrap;
         gap: 8px;
-        margin-top: 16px;
+        margin-top: 12px;
       }
 
       .list-header {
@@ -156,10 +176,24 @@
         font-size: 0.75rem;
         letter-spacing: 0.08em;
         color: var(--text-muted);
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 8px;
-        margin-bottom: 12px;
-        gap: 12px;
+        gap: 4px;
+        padding: 4px 8px;
+      }
+
+      .list {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: rgba(15, 23, 42, 0.65);
+      }
+
+      .list-header + .list-body {
+        border-top: 1px solid var(--border);
+      }
+
+      .list-body {
+        display: flex;
+        flex-direction: column;
       }
 
       .badge {
@@ -175,49 +209,87 @@
       .components {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-      }
-
-      .components {
-        margin-top: 8px;
       }
 
       .ingredient-row,
       .pump-row,
       .component-row {
         position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        padding: 16px;
-        padding-right: 64px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background-color: rgba(15, 23, 42, 0.75);
-        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.08);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+        align-items: center;
+        gap: 4px 8px;
+        padding: 4px 6px;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .list-body > .ingredient-row,
+      .list-body > .pump-row,
+      .list-body > .component-row {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .list-body > .ingredient-row:last-child,
+      .list-body > .pump-row:last-child,
+      .list-body > .component-row:last-child {
+        border-bottom: none;
       }
 
       .ingredient-row input,
       .pump-row select,
       .component-row select,
       .component-row input {
-        flex: 1 1 180px;
+        flex: 1 1 160px;
         min-width: 0;
+      }
+
+      .list-body input,
+      .list-body select {
+        border-radius: 0;
+        border-top: 0;
+        border-bottom: 0;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        padding: 8px 10px;
+      }
+
+      .list-body > .ingredient-row:first-child input,
+      .list-body > .ingredient-row:first-child select,
+      .list-body > .pump-row:first-child input,
+      .list-body > .pump-row:first-child select,
+      .list-body > .component-row:first-child input,
+      .list-body > .component-row:first-child select {
+        border-top: 1px solid var(--border);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .list-body > .ingredient-row:last-child input,
+      .list-body > .ingredient-row:last-child select,
+      .list-body > .pump-row:last-child input,
+      .list-body > .pump-row:last-child select,
+      .list-body > .component-row:last-child input,
+      .list-body > .component-row:last-child select {
+        border-bottom: 1px solid var(--border);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
       }
 
       .ingredient-row button,
       .pump-row button,
       .component-row button {
-        position: absolute;
-        top: 12px;
-        right: 12px;
+        position: static;
+        justify-self: flex-end;
         margin: 0;
       }
 
       #recipe-list {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 10px;
       }
 
       .recipe-row {
@@ -228,6 +300,7 @@
 
       .recipe-row .row {
         flex-direction: column;
+        gap: 8px;
       }
 
       .recipe-row .row > * {
@@ -235,11 +308,23 @@
       }
 
       #ingredients-section .list-header {
-        grid-template-columns: minmax(110px, 160px) minmax(200px, 1fr) auto;
+        grid-template-columns: minmax(110px, 0.9fr) minmax(170px, 1.1fr) auto;
       }
 
       #pumps-section .list-header {
-        grid-template-columns: minmax(180px, 1fr) minmax(80px, 110px) auto;
+        grid-template-columns: minmax(160px, 1fr) minmax(120px, 0.8fr) auto;
+      }
+
+      #ingredients-section .ingredient-row {
+        grid-template-columns: minmax(110px, 0.9fr) minmax(170px, 1.1fr) auto;
+      }
+
+      #pumps-section .pump-row {
+        grid-template-columns: minmax(160px, 1fr) minmax(120px, 0.8fr) auto;
+      }
+
+      .components .component-row {
+        grid-template-columns: minmax(170px, 1.1fr) minmax(80px, 0.7fr) auto;
       }
 
       .recipe-actions {
@@ -247,12 +332,17 @@
         flex-wrap: wrap;
         gap: 8px;
         justify-content: flex-end;
-        margin-top: 12px;
+        margin-top: 8px;
       }
 
       .empty-message {
         color: var(--text-muted);
         font-style: italic;
+      }
+
+      .list-body .empty-message {
+        margin: 0;
+        padding: 8px 10px;
       }
 
       @media (max-width: 640px) {
@@ -268,11 +358,6 @@
           min-width: 100%;
         }
 
-        .section-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
         #ingredients-section .list-header,
         #pumps-section .list-header {
           display: none;
@@ -282,20 +367,22 @@
         .pump-row,
         .component-row {
           grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .section-header-actions {
+          margin-left: auto;
+        }
+
+        .components {
+          border: 1px solid var(--border);
+          border-radius: 10px;
         }
 
         .ingredient-row button,
         .pump-row button,
         .component-row button {
           justify-self: flex-start;
-        }
-
-        .components {
-          border-left: none;
-          border-top: 2px dashed rgba(255, 255, 255, 0.08);
-          padding-left: 0;
-          padding-top: 12px;
-          margin-left: 0;
         }
 
         .recipe-actions {
@@ -308,76 +395,126 @@
     <main class="page">
       <h1>Панель бармена</h1>
       <div class="grid">
-        <section class="card" id="wifi-section">
-          <h2>Wi-Fi</h2>
-          <div class="row">
-            <div>
-              <label for="wifi-ssid">SSID</label>
-              <input id="wifi-ssid" type="text" placeholder="BarMachine" />
-            </div>
-            <div>
-              <label for="wifi-password">Пароль</label>
-              <input id="wifi-password" type="password" placeholder="•••••••" />
+        <section class="card collapsible" id="wifi-section">
+          <div class="section-header">
+            <h2 style="margin: 0">Wi-Fi</h2>
+            <div class="section-header-actions">
+              <button
+                class="secondary icon collapse-toggle"
+                data-target="wifi-section"
+                aria-expanded="true"
+              >
+                −
+              </button>
             </div>
           </div>
-          <div class="section-actions">
-            <button id="wifi-save">Сохранить</button>
-            <span class="badge" id="wifi-status"></span>
+          <div class="section-content">
+            <div class="row">
+              <div>
+                <label for="wifi-ssid">SSID</label>
+                <input id="wifi-ssid" type="text" placeholder="BarMachine" />
+              </div>
+              <div>
+                <label for="wifi-password">Пароль</label>
+                <input id="wifi-password" type="password" placeholder="•••••••" />
+              </div>
+            </div>
+            <div class="section-actions">
+              <button id="wifi-save">Сохранить</button>
+              <span class="badge" id="wifi-status"></span>
+            </div>
           </div>
         </section>
 
-        <section class="card" id="ingredients-section">
+        <section class="card collapsible" id="ingredients-section">
           <div class="section-header">
             <h2 style="margin: 0">Ингредиенты</h2>
-            <button class="secondary" id="ingredient-add">+ добавить</button>
+            <div class="section-header-actions">
+              <button class="secondary" id="ingredient-add">+ добавить</button>
+              <button
+                class="secondary icon collapse-toggle"
+                data-target="ingredients-section"
+                aria-expanded="true"
+              >
+                −
+              </button>
+            </div>
           </div>
-          <div class="list-header">
-            <span>Короткое имя</span>
-            <span>Отображаемое имя</span>
-            <span></span>
-          </div>
-          <div id="ingredient-rows"></div>
-          <p class="empty-message" id="ingredient-empty" hidden>
-            Ингредиенты не заданы
-          </p>
-          <div class="section-actions">
-            <button id="ingredient-save">Сохранить</button>
-            <span class="badge" id="ingredient-status"></span>
+          <div class="section-content">
+            <div class="list">
+              <div class="list-header">
+                <span>Короткое имя</span>
+                <span>Отображаемое имя</span>
+                <span></span>
+              </div>
+              <div class="list-body" id="ingredient-rows"></div>
+            </div>
+            <p class="empty-message" id="ingredient-empty" hidden>
+              Ингредиенты не заданы
+            </p>
+            <div class="section-actions">
+              <button id="ingredient-save">Сохранить</button>
+              <span class="badge" id="ingredient-status"></span>
+            </div>
           </div>
         </section>
 
-        <section class="card" id="recipes-section">
+        <section class="card collapsible" id="recipes-section">
           <div class="section-header">
             <h2 style="margin: 0">Рецепты</h2>
-            <button class="secondary" id="recipe-add">+ рецепт</button>
+            <div class="section-header-actions">
+              <button class="secondary" id="recipe-add">+ рецепт</button>
+              <button
+                class="secondary icon collapse-toggle"
+                data-target="recipes-section"
+                aria-expanded="true"
+              >
+                −
+              </button>
+            </div>
           </div>
-          <div id="recipe-list"></div>
-          <p class="empty-message" id="recipe-empty" hidden>
-            Рецептов пока нет
-          </p>
-          <div class="section-actions">
-            <button id="recipe-save">Сохранить</button>
-            <span class="badge" id="recipe-status"></span>
+          <div class="section-content">
+            <div id="recipe-list"></div>
+            <p class="empty-message" id="recipe-empty" hidden>
+              Рецептов пока нет
+            </p>
+            <div class="section-actions">
+              <button id="recipe-save">Сохранить</button>
+              <span class="badge" id="recipe-status"></span>
+            </div>
           </div>
         </section>
 
-        <section class="card" id="pumps-section">
+        <section class="card collapsible" id="pumps-section">
           <div class="section-header">
             <h2 style="margin: 0">Помпы</h2>
-            <button class="secondary" id="pump-add">+ назначение</button>
+            <div class="section-header-actions">
+              <button class="secondary" id="pump-add">+ назначение</button>
+              <button
+                class="secondary icon collapse-toggle"
+                data-target="pumps-section"
+                aria-expanded="true"
+              >
+                −
+              </button>
+            </div>
           </div>
-          <div class="list-header">
-            <span>Ингредиент</span>
-            <span>Помпа</span>
-            <span></span>
-          </div>
-          <div id="pump-rows"></div>
-          <p class="empty-message" id="pump-empty" hidden>
-            Назначения отсутствуют
-          </p>
-          <div class="section-actions">
-            <button id="pump-save">Сохранить</button>
-            <span class="badge" id="pump-status"></span>
+          <div class="section-content">
+            <div class="list">
+              <div class="list-header">
+                <span>Ингредиент</span>
+                <span>Помпа</span>
+                <span></span>
+              </div>
+              <div class="list-body" id="pump-rows"></div>
+            </div>
+            <p class="empty-message" id="pump-empty" hidden>
+              Назначения отсутствуют
+            </p>
+            <div class="section-actions">
+              <button id="pump-save">Сохранить</button>
+              <span class="badge" id="pump-status"></span>
+            </div>
           </div>
         </section>
       </div>
@@ -400,14 +537,16 @@
     </template>
 
     <template id="recipe-template">
-      <div class="recipe-row card" style="padding: 16px; margin-bottom: 12px">
+      <div class="recipe-row card" style="padding: 14px">
         <div class="row">
           <div>
             <label>Название</label>
             <input type="text" placeholder="Пина колада" data-field="name" />
           </div>
         </div>
-        <div class="components"></div>
+        <div class="components list">
+          <div class="list-body" data-components></div>
+        </div>
         <div class="recipe-actions">
           <button class="secondary" data-action="add-component">+ ингредиент</button>
           <button class="danger" data-action="remove-recipe">Удалить рецепт</button>
@@ -568,7 +707,7 @@
           const nameInput = node.querySelector('[data-field="name"]');
           nameInput.value = recipe.name;
           nameInput.addEventListener("input", (e) => (recipe.name = e.target.value));
-          const compContainer = node.querySelector(".components");
+          const compContainer = node.querySelector('[data-components]');
 
           const renderComponents = () => {
             compContainer.innerHTML = "";
@@ -863,6 +1002,19 @@
         return "";
       }
 
+      function setupCollapsibles() {
+        document.querySelectorAll(".collapse-toggle").forEach((btn) => {
+          const section = document.getElementById(btn.dataset.target);
+          if (!section) return;
+          btn.addEventListener("click", () => {
+            const collapsed = section.classList.toggle("collapsed");
+            btn.textContent = collapsed ? "+" : "−";
+            btn.setAttribute("aria-expanded", String(!collapsed));
+          });
+        });
+      }
+
+      setupCollapsibles();
       init();
     </script>
   </body>
