@@ -1,2 +1,4 @@
 __pycache__/
 mock_state.json
+
+web_minimized/index.html.gz
